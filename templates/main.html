@@ -1,0 +1,101 @@
+{% load static %}
+<html lang="en" class="scroll-smooth">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IgnisGuard AI | Real-Time Fire & Smoke Detection</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    </head>
+    <body>
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center gap-3 cursor-pointer group">
+            <i class="fa-solid fa-fire-flame-curved text-yellow-400 text-2xl drop-shadow-[0_0_12px_rgba(250,204,21,0.6)] group-hover:scale-110 transition-transform"></i>
+            <div>
+                <span class="font-bold text-lg tracking-tight text-white"><a href="{% url 'home_page' %}">IgnisGuard AI</a></span>
+                <span class="ml-2 text-[10px] font-mono bg-amber-500/15 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">YOLOv8</span>
+            </div>
+            </div>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+            <a href="{% url 'live_detection' %}" class="hover:text-amber-400 transition-colors">Live Feed</a>
+            
+            <a href="{% url 'image_detection' %}" class="hover:text-amber-400 transition-colors">Photo Inspection</a>
+            <a href="#model-details" class="hover:text-amber-400 transition-colors">Model Details</a>
+            <a href="#metrics" class="hover:text-amber-400 transition-colors">Metrics</a>
+            <!-- <a href="#" class="hover:text-cyan-400 transition-colors">API Docs</a> -->
+            </div>
+            <div class="flex items-center gap-3">
+            <div class="relative flex items-center justify-center w-2.5 h-2.5">
+                <span class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+            </div>
+            <span class="hidden sm:block text-xs font-semibold text-slate-300 bg-slate-900/60 px-3 py-1.5 rounded-full border border-slate-700/50 pulse-badge">YOLOv8 Engine: Ready</span>
+            </div>
+        </div>
+        </div>
+    </nav>
+        {% block content %}
+        {% endblock %}
+
+  <footer class="border-t border-slate-800/50 bg-slate-950 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="flex flex-col md:items-start items-center gap-3">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-fire-flame-curved text-amber-400 text-xl"></i>
+            <span class="font-bold text-lg text-white tracking-tight">IgnisGuard AI</span>
+            <span class="text-[10px] font-mono text-slate-600 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">v2.4.1-stable</span>
+          </div>
+          <p class="text-xs text-slate-500 max-w-xs text-center md:text-left">Enterprise-grade fire safety AI. Engineered for speed, transparency, and reliability.</p>
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="https://www.linkedin.com/in/sumit-kumar-ml/" class="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 hover:border-amber-500/30 hover:-translate-y-1 transition-all border border-slate-800"><i class="fa-brands fa-linkedin text-lg"></i></a>
+          <a href="https://github.com/sumitkumar1233edeedad" class="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 hover:border-cyan-400/30 hover:-translate-y-1 transition-all border border-slate-800"><i class="fa-brands fa-github text-lg"></i></a>
+          <a href="mailto:sumitsoha963@gmail.com" class="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 hover:border-red-400/30 hover:-translate-y-1 transition-all border border-slate-800"><i class="fa-solid fa-envelope text-lg"></i></a>
+          <!-- <a href="#" class="w-10 h-10 rounded-lg bg-slate-900 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 hover:border-purple-400/30 hover:-translate-y-1 transition-all border border-slate-800"><i class="fa-solid fa-database text-lg"></i></a> -->
+        </div>
+      </div>
+      <div class="mt-8 pt-6 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-slate-600">
+        <p>© 2026 IgnisGuard AI Systems. All rights reserved.</p>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-slate-400 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-slate-400 transition">Terms of Service</a>
+          <a href="#" class="hover:text-slate-400 transition">Model Card</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('[data-tilt]');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          // Max rotation 12deg
+          const rotateX = ((y - centerY) / centerY) * -12;
+          const rotateY = ((x - centerX) / centerX) * 12;
+          
+          card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
+          card.style.transition = 'none';
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+          card.style.transition = 'transform 0.5s ease-out, box-shadow 0.3s ease, border-color 0.3s ease';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+
+

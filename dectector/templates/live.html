@@ -1,0 +1,162 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="relative py-16 md:py-20 overflow-hidden">
+
+  <!-- ambient glow background, matches homepage hero -->
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-10 left-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-10 right-10 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl animate-pulse" style="animation-delay:2s;"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+    <!-- Page header -->
+    <div class="text-center mb-10">
+      <span class="inline-flex items-center gap-2 bg-slate-800/60 backdrop-blur-sm px-4 py-1.5 rounded-full border border-slate-700/60 text-sm shadow-xl mb-4">
+        <i class="fas fa-video text-cyan-400"></i>
+        <span class="text-slate-300">Live Webcam / IP · YOLOv8</span>
+      </span>
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+        <i class="fas fa-fire-flame-curved text-amber-500 mr-2 drop-shadow-[0_0_20px_rgba(250,204,21,0.3)]"></i>
+        FireVision <span class="text-amber-400">Live Detection</span>
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto mt-3">
+        Streaming your webcam to the YOLOv8 engine frame-by-frame. Bounding boxes and alerts update automatically, no page reload needed.
+      </p>
+
+      <!-- live status badge, matches nav bar badge -->
+      <div class="inline-flex items-center gap-1.5 bg-slate-800/60 px-3 py-1.5 rounded-full border border-slate-700/60 text-xs live-badge-3d mt-5">
+        <span class="relative flex h-2 w-2">
+          <span id="live-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span class="text-emerald-300 font-mono tracking-wide" id="stream-status">Camera: <span class="text-emerald-200 font-semibold">Connecting…</span></span>
+      </div>
+    </div>
+
+    <!-- Video + prediction panels -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Live camera feed -->
+      <div class="tilt-card">
+        <div class="tilt-card-inner glass-3d rounded-2xl p-6 h-full flex flex-col border border-slate-700/40">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-cyan-500/20 p-3 rounded-xl text-cyan-400"><i class="fas fa-video text-xl"></i></span>
+            <h3 class="text-lg font-semibold text-white">Camera Feed</h3>
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700/50 bg-slate-950/50 flex items-center justify-center">
+            <video id="video" width="640" height="480" autoplay muted playsinline class="w-full h-auto"></video>
+          </div>
+          <canvas id="canvas" style="display:none;"></canvas>
+        </div>
+      </div>
+
+      <!-- YOLOv8 prediction overlay -->
+      <div class="tilt-card">
+        <div class="tilt-card-inner glass-3d rounded-2xl p-6 h-full flex flex-col border border-amber-500/30 glow-ring">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-amber-500/20 p-3 rounded-xl text-amber-400"><i class="fas fa-brain text-xl"></i></span>
+            <h3 class="text-lg font-semibold text-white">YOLOv8 Prediction</h3>
+          </div>
+          <div class="rounded-xl overflow-hidden border border-amber-500/30 bg-slate-950/50 flex items-center justify-center min-h-[240px]"
+               style="box-shadow: 0 0 30px -8px rgba(250,204,21,0.15);">
+            <img id="result" width="640" class="w-full h-auto" alt="Live prediction overlay">
+          </div>
+          <div class="flex flex-wrap gap-3 mt-4 text-xs text-slate-400">
+            <span class="bg-slate-800/60 px-2.5 py-1 rounded-full border border-slate-700"><i class="fas fa-bolt text-amber-400"></i> YOLOv8-m</span>
+            <span class="bg-slate-800/60 px-2.5 py-1 rounded-full border border-slate-700"><i class="fas fa-gauge-high text-cyan-400"></i> ~2 fps stream</span>
+            <span id="alert-chip" class="hidden bg-red-500/20 border border-red-500/40 text-red-300 px-2.5 py-1 rounded-full font-medium"><i class="fas fa-triangle-exclamation mr-1"></i>Fire detected</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="text-center text-slate-500 text-xs mt-8">
+      <i class="fas fa-shield-halved text-slate-500 mr-1"></i>
+      Video is processed frame-by-frame in your browser and sent directly to the detection endpoint — nothing is stored unless an alert is triggered.
+    </p>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  const video = document.getElementById("video");
+  const canvas = document.getElementById("canvas");
+  const result = document.getElementById("result");
+  const statusEl = document.getElementById("stream-status");
+  const pingEl = document.getElementById("live-ping");
+  const alertChip = document.getElementById("alert-chip");
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+      statusEl.innerHTML = 'Camera: <span class="text-emerald-200 font-semibold">Live</span>';
+    })
+    .catch(() => {
+      statusEl.innerHTML = 'Camera: <span class="text-red-300 font-semibold">Unavailable</span>';
+      pingEl.classList.remove("bg-emerald-400");
+      pingEl.classList.add("bg-red-400");
+    });
+
+  setInterval(() => {
+    if (!video.videoWidth) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    let ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+
+    canvas.toBlob(blob => {
+      let formData = new FormData();
+      formData.append("frame", blob, "frame.jpg");
+
+      fetch("/predict-frame/", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          result.src = "data:image/jpeg;base64," + data.image;
+          if (data.fire_detected) {
+            alertChip.classList.remove("hidden");
+          } else {
+            alertChip.classList.add("hidden");
+          }
+        })
+        .catch(() => {
+          statusEl.innerHTML = 'Camera: <span class="text-amber-300 font-semibold">Reconnecting…</span>';
+        });
+    }, "image/jpeg");
+  }, 500);
+
+  // reuse the same 3D tilt effect as the homepage module cards
+  document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const inner = card.querySelector('.tilt-card-inner');
+      if (inner) {
+        inner.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(12px)`;
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      const inner = card.querySelector('.tilt-card-inner');
+      if (inner) {
+        inner.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0px)';
+      }
+    });
+  });
+})();
+</script>
+
+{% endblock %} 

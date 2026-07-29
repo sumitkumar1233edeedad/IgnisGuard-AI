@@ -1,0 +1,148 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="relative py-16 md:py-20 overflow-hidden">
+
+  <!-- ambient glow background, matches homepage hero -->
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-10 left-10 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-10 right-10 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl animate-pulse" style="animation-delay:2s;"></div>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+    <!-- Page header -->
+    <div class="text-center mb-10">
+      <span class="inline-flex items-center gap-2 bg-slate-800/60 backdrop-blur-sm px-4 py-1.5 rounded-full border border-slate-700/60 text-sm shadow-xl mb-4">
+        <i class="fas fa-image text-purple-400"></i>
+        <span class="text-slate-300">Single Photo Inspection · YOLOv8</span>
+      </span>
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+        <i class="fas fa-fire-flame-curved text-amber-500 mr-2 drop-shadow-[0_0_20px_rgba(250,204,21,0.3)]"></i>
+        Fire <span class="text-amber-400">Detection</span>
+      </h2>
+      <p class="text-slate-400 max-w-xl mx-auto mt-3">
+        Upload a single JPEG or PNG. IgnisGuard runs it through the custom YOLOv8 model and returns bounding boxes with confidence scores.
+      </p>
+    </div>
+
+    <!-- Upload card -->
+    <div class="glass-3d rounded-2xl border border-slate-700/40 p-8 max-w-2xl mx-auto glow-ring">
+      <form method="POST" enctype="multipart/form-data" class="flex flex-col items-center gap-6">
+        {% csrf_token %}
+
+        <label for="id_image_input"
+               class="w-full flex flex-col items-center justify-center gap-3 border-2 border-dashed border-slate-600 hover:border-amber-400/60 rounded-xl py-12 px-6 cursor-pointer transition-all duration-300 bg-slate-800/30 hover:bg-slate-800/50">
+          <i class="fas fa-cloud-arrow-up text-4xl text-cyan-400"></i>
+          <span class="text-slate-200 font-medium">Drag & drop an image, or click to browse</span>
+          <span class="text-slate-500 text-xs">Supports JPG / PNG — one file at a time</span>
+          <input id="id_image_input" type="file" name="image" accept="image/*" required class="hidden">
+        </label>
+
+        <span id="file-chosen-label" class="text-sm text-slate-400 -mt-2 hidden">
+          <i class="fas fa-paperclip text-amber-400 mr-1.5"></i><span id="file-chosen-name"></span>
+        </span>
+
+        <button type="submit"
+                class="btn-3d-fire inline-flex items-center gap-2 px-10 py-3.5 rounded-xl text-white font-semibold shadow-2xl">
+          <i class="fas fa-magnifying-glass"></i> Predict
+        </button>
+      </form>
+    </div>
+
+    {% if original_image %}
+    <div class="divider-glow my-14"></div>
+
+    <div class="mb-8 text-center">
+      <span class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-4 py-1.5 rounded-full text-sm">
+        <i class="fas fa-circle-check"></i> Inference complete
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Original image -->
+      <div class="tilt-card">
+        <div class="tilt-card-inner glass-3d rounded-2xl p-6 h-full flex flex-col border border-slate-700/40">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-cyan-500/20 p-3 rounded-xl text-cyan-400"><i class="fas fa-image text-xl"></i></span>
+            <h3 class="text-lg font-semibold text-white">Original Image</h3>
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700/50">
+            <img src="data:image/jpeg;base64,{{ original_image }}"
+                 alt="Original upload"
+                 class="w-full h-auto object-cover">
+          </div>
+        </div>
+      </div>
+
+      <!-- Prediction image -->
+      <div class="tilt-card">
+        <div class="tilt-card-inner glass-3d rounded-2xl p-6 h-full flex flex-col border border-amber-500/30 glow-ring">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-amber-500/20 p-3 rounded-xl text-amber-400"><i class="fas fa-brain text-xl"></i></span>
+            <h3 class="text-lg font-semibold text-white">YOLOv8 Prediction</h3>
+          </div>
+          <div class="rounded-xl overflow-hidden border border-amber-500/30" style="box-shadow: 0 0 30px -8px rgba(250,204,21,0.15);">
+            <img src="data:image/jpeg;base64,{{ prediction_image }}"
+                 alt="Model prediction with bounding boxes"
+                 class="w-full h-auto object-cover">
+          </div>
+          <div class="flex flex-wrap gap-3 mt-4 text-xs text-slate-400">
+            <span class="bg-slate-800/60 px-2.5 py-1 rounded-full border border-slate-700"><i class="fas fa-bolt text-amber-400"></i> YOLOv8-m</span>
+            <span class="bg-slate-800/60 px-2.5 py-1 rounded-full border border-slate-700"><i class="fas fa-clock text-cyan-400"></i> &lt; 25ms</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="{{ request.path }}" class="btn-3d-glass inline-flex items-center gap-2 px-8 py-3 rounded-xl text-slate-200 font-semibold">
+        <i class="fas fa-rotate-right"></i> Analyze Another Image
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<script>
+  // show chosen filename + auto-preview label under the dropzone
+  (function () {
+    const input = document.getElementById('id_image_input');
+    const label = document.getElementById('file-chosen-label');
+    const nameEl = document.getElementById('file-chosen-name');
+    if (input) {
+      input.addEventListener('change', () => {
+        if (input.files && input.files.length > 0) {
+          nameEl.textContent = input.files[0].name;
+          label.classList.remove('hidden');
+        }
+      });
+    }
+  })();
+
+  // reuse the same 3D tilt effect as the homepage module cards
+  document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const inner = card.querySelector('.tilt-card-inner');
+      if (inner) {
+        inner.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(12px)`;
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      const inner = card.querySelector('.tilt-card-inner');
+      if (inner) {
+        inner.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0px)';
+      }
+    });
+  });
+</script>
+
+{% endblock %}

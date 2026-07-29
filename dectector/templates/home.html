@@ -1,0 +1,397 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+  <header class="pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-[85vh] flex flex-col lg:flex-row items-center justify-center gap-12 relative overflow-hidden">
+    <div class="absolute top-20 left-10 w-72 h-72 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    
+    <div class="lg:w-1/2 z-10 text-center lg:text-left">
+      <div class="inline-block px-3 py-1 mb-4 rounded-full bg-slate-800 border border-slate-700 text-xs font-medium text-cyan-400">
+        <i class="fa-solid fa-bolt mr-1"></i> Next-Gen Edge Inference
+      </div>
+      <h1 class="text-4xl lg:text-6xl xl:text-7xl font-extrabold leading-tight mb-6 text-white">
+        Instant AI <span class="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500">Fire & Smoke</span> Detection
+      </h1>
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+        Deployed via a scalable <span class="text-cyan-400 font-semibold">Django</span> backend with a fine-tuned <span class="text-amber-400 font-semibold">YOLOv8</span> model. Achieves sub-<span class="text-amber-400">25ms</span> inference latency with 96%+ confidence across industrial environments.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+        <a href="#live-feed" class="glass bg-gradient-to-r from-amber-500/90 to-yellow-400/90 text-slate-900 font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-400/40 transition-all flex items-center justify-center gap-2 group tilt-card">
+          <i class="fa-solid fa-video text-lg group-hover:rotate-12 transition-transform"></i>
+          <span class="tilt-content">Start Live Detection</span>
+        </a>
+        <a href="#video-analysis" class="glass bg-slate-800/60 border border-cyan-500/30 text-cyan-300 font-bold px-8 py-3.5 rounded-xl hover:bg-cyan-500/10 hover:border-cyan-400/60 transition-all flex items-center justify-center gap-2 group tilt-card">
+          <i class="fa-solid fa-file-arrow-up text-lg group-hover:translate-y-[-2px] transition-transform"></i>
+          <span class="tilt-content">Analyze File</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="lg:w-1/2 flex justify-center relative z-10 perspective-800">
+      <div class="tilt-card glass p-8 rounded-2xl border-t border-white/15 border-b border-amber-500/20 shadow-2xl shadow-amber-500/5 max-w-sm w-full" data-tilt>
+        <div class="tilt-content flex flex-col gap-6">
+          <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center border border-amber-500/30">
+                <i class="fa-solid fa-shield-halved text-amber-400 text-xl"></i>
+              </div>
+              <div>
+                <p class="text-slate-400 text-xs uppercase tracking-wider">Confidence Score</p>
+                <p class="text-3xl font-bold text-white">96.8%</p>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-trend-up text-green-400 text-xl"></i>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-slate-900/40 p-4 rounded-lg border border-white/5">
+              <p class="text-slate-500 text-xs mb-1">Avg Latency</p>
+              <p class="text-2xl font-mono font-bold text-cyan-400">18.4 ms</p>
+            </div>
+            <div class="bg-slate-900/40 p-4 rounded-lg border border-white/5">
+              <p class="text-slate-500 text-xs mb-1">mAP@50</p>
+              <p class="text-2xl font-mono font-bold text-amber-400">0.892</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs text-slate-400"><span>Processing Load</span><span>42%</span></div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-amber-500 to-cyan-400 w-[42%] rounded-full shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-600 text-center mt-2">Live metrics from GPU cluster node-01</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Detection Modules Grid -->
+  <section id="modules" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Detection Modules</h2>
+      <p class="text-slate-400 mt-2">Choose your inference workflow</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Live Stream -->
+      <div class="tilt-card glass rounded-2xl p-6 relative overflow-hidden group" data-tilt id="live-feed">
+        <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.08] transition-all duration-500">
+          <i class="fa-solid fa-camera text-[120px] text-amber-400"></i>
+        </div>
+        <div class="tilt-content relative z-10 flex flex-col h-full">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/15 flex items-center justify-center mb-5 border border-amber-500/25 shadow-[0_0_15px_rgba(250,204,21,0.1)]">
+            <i class="fa-solid fa-satellite-dish text-amber-400 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Live Webcam/IP Stream</h3>
+          <p class="text-slate-400 text-sm mb-5 flex-1 leading-relaxed">Real-time continuous monitoring via WebRTC/RTSP. Adaptive frame skipping with instant WebSocket alert triggers.</p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-xs bg-slate-900/50 px-2.5 py-1 rounded-md border border-slate-700/50 text-cyan-400">WebRTC</span>
+            <span class="text-xs bg-slate-900/50 px-2.5 py-1 rounded-md border border-slate-700/50 text-cyan-400">RTSP</span>
+            <span class="text-xs bg-slate-900/50 px-2.5 py-1 rounded-md border border-slate-700/50 text-cyan-400">Edge Ready</span>
+          </div>
+          <button class="w-full py-3 rounded-xl bg-slate-900/70 hover:bg-amber-500 hover:text-slate-900 border border-amber-500/40 text-amber-400 transition-all font-semibold text-sm shadow-lg hover:shadow-amber-500/30" ><a href="{% url 'live_detection' %}">Launch Stream</a></button>
+        </div>
+      </div>
+      
+      <!-- Single Photo -->
+      <div class="tilt-card glass rounded-2xl p-6 relative overflow-hidden group" data-tilt id="photo-inspection">
+        <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.08] transition-all duration-500">
+          <i class="fa-solid fa-image text-[120px] text-cyan-400"></i>
+        </div>
+        <div class="tilt-content relative z-10 flex flex-col h-full">
+          <div class="w-12 h-12 rounded-xl bg-cyan-400/15 flex items-center justify-center mb-5 border border-cyan-400/25 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+            <i class="fa-solid fa-images text-cyan-400 text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Single Photo Scan</h3>
+          <p class="text-slate-400 text-sm mb-5 flex-1 leading-relaxed">Rapid single-image classification and bounding box generation. Generates heatmaps for safety audit compliance.</p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-xs bg-slate-900/50 px-2.5 py-1 rounded-md border border-slate-700/50 text-cyan-400">JPG/PNG</span>
+            <span class="text-xs bg-slate-900/50 px-2.5 py-1 rounded-md border border-slate-700/50 text-cyan-400">ROI Mask</span>
+            <span class="text-xs bg-slate-900/50 px-2.5 py-1 rounded-md border border-slate-700/50 text-cyan-400">Heatmap</span>
+          </div>
+          <button class="w-full py-3 rounded-xl bg-slate-900/70 hover:bg-cyan-500 hover:text-slate-900 border border-cyan-500/40 text-cyan-400 transition-all font-semibold text-sm shadow-lg hover:shadow-cyan-500/30"><a href="{% url 'image_detection' %}">Analyze Image</a></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance Stats Strip -->
+  <section id="metrics" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+      <div class="glass p-6 rounded-xl text-center tilt-card border border-white/5 hover:border-amber-500/30" data-tilt>
+        <div class="tilt-content">
+          <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">Dataset Size</p>
+          <p class="text-3xl font-bold text-white">45,800+</p>
+          <p class="text-xs text-amber-400 mt-1">Annotated Frames</p>
+        </div>
+      </div>
+      <div class="glass p-6 rounded-xl text-center tilt-card border border-white/5 hover:border-amber-500/30" data-tilt>
+        <div class="tilt-content">
+          <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">mAP@50</p>
+          <p class="text-3xl font-bold text-amber-400">0.892</p>
+          <p class="text-xs text-slate-400 mt-1">High Precision</p>
+        </div>
+      </div>
+      <div class="glass p-6 rounded-xl text-center tilt-card border border-white/5 hover:border-cyan-500/30" data-tilt>
+        <div class="tilt-content">
+          <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">Inference Latency</p>
+          <p class="text-3xl font-bold text-cyan-400">18ms</p>
+          <p class="text-xs text-slate-400 mt-1">Nvidia T4 / Edge</p>
+        </div>
+      </div>
+      <div class="glass p-6 rounded-xl text-center tilt-card border border-white/5 hover:border-red-500/30" data-tilt>
+        <div class="tilt-content">
+          <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">Classes Detected</p>
+          <p class="text-3xl font-bold text-red-500">4</p>
+          <p class="text-xs text-slate-400 mt-1">Fire, Smoke, etc.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Model Deep Dive -->
+  <section id="model-details" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Model Architecture & Training</h2>
+      <p class="text-slate-400 mt-2">Full transparency on the detection pipeline</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <!-- Left Column: Cube, Timeline, Specs -->
+      <div class="lg:col-span-5 space-y-8">
+        <div class="cube-container">
+          <div class="cube">
+            <div class="cube-face cube-front">
+              <i class="fa-solid fa-microchip text-cyan-400 text-3xl mb-3"></i>
+              <h4 class="font-bold text-white text-sm">CSPDarknet-53</h4>
+              <p class="text-[10px] text-slate-300 mt-1">Backbone</p>
+            </div>
+            <div class="cube-face cube-right">
+              <i class="fa-solid fa-network-wired text-amber-400 text-3xl mb-3"></i>
+              <h4 class="font-bold text-white text-sm">PANet + Head</h4>
+              <p class="text-[10px] text-slate-300 mt-1">Neck Architecture</p>
+            </div>
+            <div class="cube-face cube-back">
+              <i class="fa-solid fa-expand text-red-400 text-3xl mb-3"></i>
+              <h4 class="font-bold text-white text-sm">640 × 640</h4>
+              <p class="text-[10px] text-slate-300 mt-1">Input Resolution</p>
+            </div>
+            <div class="cube-face cube-left">
+              <i class="fa-solid fa-server text-purple-400 text-3xl mb-3"></i>
+              <h4 class="font-bold text-white text-sm">ONNX -> TRT</h4>
+              <p class="text-[10px] text-slate-300 mt-1">Optimized Runtime</p>
+            </div>
+            <div class="cube-face cube-top border-amber-500/20">
+              <i class="fa-solid fa-layer-group text-amber-400 text-2xl mb-2"></i>
+              <p class="font-bold text-white text-xs">YOLOv8 Core</p>
+            </div>
+            <div class="cube-face cube-bottom border-cyan-500/20">
+              <i class="fa-solid fa-cube text-cyan-400 text-2xl mb-2"></i>
+              <p class="font-bold text-white text-xs">Edge Deployed</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass p-5 rounded-xl">
+          <h3 class="text-sm font-bold text-amber-400 mb-4 flex items-center gap-2 uppercase tracking-wider"><i class="fa-solid fa-gears"></i> 5-Step Pipeline</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="mt-1 w-2 h-2 rounded-full bg-amber-500 shadow shadow-amber-500"></div>
+              <div class="bg-slate-900/40 p-3 rounded border-l-2 border-amber-400 flex-1">
+                <span class="block font-semibold text-slate-200 text-sm">1. Data Collection & Augmentation</span>
+                <span class="text-xs text-slate-500">Web scraping, M4, HSV, Random Crop</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="mt-1 w-2 h-2 rounded-full bg-amber-500"></div>
+              <div class="bg-slate-900/40 p-3 rounded border-l-2 border-amber-400 flex-1">
+                <span class="block font-semibold text-slate-200 text-sm">2. Preprocessing & Labeling</span>
+                <span class="text-xs text-slate-500">CVAT -> YOLO format normalization</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="mt-1 w-2 h-2 rounded-full bg-cyan-400 shadow shadow-cyan-400"></div>
+              <div class="bg-slate-900/40 p-3 rounded border-l-2 border-cyan-400 flex-1">
+                <span class="block font-semibold text-slate-200 text-sm">3. Transfer Learning (COCO)</span>
+                <span class="text-xs text-slate-500">Pre-trained yolo8s.pt weights</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="mt-1 w-2 h-2 rounded-full bg-cyan-400"></div>
+              <div class="bg-slate-900/40 p-3 rounded border-l-2 border-cyan-400 flex-1">
+                <span class="block font-semibold text-slate-200 text-sm">4. Validation & HyperTuning</span>
+                <span class="text-xs text-slate-500">Early stopping, LR decay tuning</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="mt-1 w-2 h-2 rounded-full bg-red-500 shadow shadow-red-500"></div>
+              <div class="bg-slate-900/40 p-3 rounded border-l-2 border-red-500 flex-1">
+                <span class="block font-semibold text-slate-200 text-sm">5. Export & Production Serving</span>
+                <span class="text-xs text-slate-500">ONNX export -> TensorRT -> Django API</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass p-5 rounded-xl overflow-hidden">
+          <h3 class="text-sm font-bold text-cyan-400 mb-4 flex items-center gap-2 uppercase tracking-wider"><i class="fa-solid fa-file-code"></i> Technical Specs</h3>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-white/5">
+              <tr class="hover:bg-white/5 transition"><td class="py-3 text-slate-400 w-1/2">Parameters</td><td class="py-3 text-slate-200 font-mono">11.16M</td></tr>
+              <tr class="hover:bg-white/5 transition"><td class="py-3 text-slate-400">FLOPs</td><td class="py-3 text-slate-200 font-mono">28.6B</td></tr>
+              <tr class="hover:bg-white/5 transition"><td class="py-3 text-slate-400">Training Framework</td><td class="py-3 text-slate-200">PyTorch 2.1 / Ultralytics</td></tr>
+              <tr class="hover:bg-white/5 transition"><td class="py-3 text-slate-400">Augmentations</td><td class="py-3 text-slate-200">Mosaic9, Mixup, Albumentations</td></tr>
+              <tr><td class="py-3 text-slate-400">Serving Stack</td><td class="py-3 text-slate-200">Django + Channels + Celery</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Column: mAP Bars, Hyperparams, Tags, Limitations -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="glass p-6 rounded-xl">
+          <h3 class="text-lg font-bold text-amber-400 mb-5 flex items-center gap-2"><i class="fa-solid fa-bullseye"></i> Per-Class mAP Performance</h3>
+          <div class="space-y-5">
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-slate-300">Fire</span><span class="text-amber-400 font-mono font-bold">0.94</span></div>
+              <div class="w-full bg-slate-900/60 h-3 rounded-full overflow-hidden border border-white/5"><div class="bg-gradient-to-r from-amber-500 to-yellow-300 h-full rounded-full w-[94%] shadow-[0_0_10px_rgba(250,204,21,0.4)]"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-slate-300">Smoke</span><span class="text-cyan-400 font-mono font-bold">0.87</span></div>
+              <div class="w-full bg-slate-900/60 h-3 rounded-full overflow-hidden border border-white/5"><div class="bg-gradient-to-r from-cyan-500 to-blue-300 h-full rounded-full w-[87%]"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-slate-300">Sparks / Arc Flash</span><span class="text-red-400 font-mono font-bold">0.81</span></div>
+              <div class="w-full bg-slate-900/60 h-3 rounded-full overflow-hidden border border-white/5"><div class="bg-gradient-to-r from-red-600 to-orange-500 h-full rounded-full w-[81%]"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-slate-300">Hazmat / Chemical Leak</span><span class="text-amber-600 font-mono font-bold">0.76</span></div>
+              <div class="w-full bg-slate-900/60 h-3 rounded-full overflow-hidden border border-white/5"><div class="bg-gradient-to-r from-amber-700 to-orange-600 h-full rounded-full w-[76%]"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass p-6 rounded-xl grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="col-span-2 md:col-span-3 mb-2">
+            <h3 class="text-sm font-bold text-cyan-400 flex items-center gap-2 uppercase tracking-wider"><i class="fa-solid fa-sliders"></i> Training Hyperparameters</h3>
+          </div>
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 text-center"><span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Epochs</span><span class="text-lg font-bold text-white">120</span></div>
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 text-center"><span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Batch Size</span><span class="text-lg font-bold text-white">32</span></div>
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 text-center"><span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Optimizer</span><span class="text-lg font-bold text-white">SGD</span></div>
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 text-center"><span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Initial LR</span><span class="text-lg font-bold text-white">0.01</span></div>
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 text-center"><span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">IoU Thresh</span><span class="text-lg font-bold text-white">0.5</span></div>
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 text-center"><span class="text-slate-500 block text-[10px] uppercase tracking-wider mb-1">Hardware</span><span class="text-lg font-bold text-white">A100x4</span></div>
+        </div>
+
+        <div class="glass p-4 rounded-xl">
+          <h3 class="text-sm font-bold text-slate-400 mb-3 uppercase tracking-wider">Class Tags</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1.5 bg-red-900/30 text-red-400 rounded-lg text-xs font-medium border border-red-800/50 shadow">Fire</span>
+            <span class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded-lg text-xs font-medium border border-slate-700">Smoke</span>
+            <span class="px-3 py-1.5 bg-orange-900/30 text-orange-400 rounded-lg text-xs font-medium border border-orange-800/50">Sparks</span>
+            <span class="px-3 py-1.5 bg-cyan-900/30 text-cyan-400 rounded-lg text-xs font-medium border border-cyan-800/50">Hazmat Leak</span>
+            <span class="px-3 py-1.5 bg-green-900/30 text-green-400 rounded-lg text-xs font-medium border border-green-800/50">Safe Zone (Neg)</span>
+          </div>
+        </div>
+
+        <div class="bg-yellow-900/10 border border-amber-700/40 p-5 rounded-xl relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl"></div>
+          <h4 class="text-amber-400 font-bold text-sm mb-2 flex items-center gap-2 relative z-10"><i class="fa-solid fa-triangle-exclamation"></i> Known Limitations</h4>
+          <p class="text-xs text-amber-100/80 leading-relaxed relative z-10">Performance degrades slightly in heavy fog or extreme low-light without IR enhancement. Highly dense smoke occlusion may cause bounding box fragmentation. Recommended deployment pairs this with acoustic heat/CO sensors for multi-modal fallback verification.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline Flow Diagram -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-white">Inference Pipeline Flow</h2>
+    <div class="flex flex-wrap justify-center gap-y-8 gap-x-4 md:gap-x-8 items-stretch">
+      
+      <div class="tilt-card glass p-5 rounded-2xl text-center min-w-[150px] w-[calc(33%-2rem)] flex-1 max-w-[200px] border-t-2 border-cyan-400/50" data-tilt>
+        <div class="tilt-content h-full flex flex-col justify-center items-center">
+          <div class="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center mb-3 shadow-lg"><i class="fa-solid fa-arrow-down-to-bracket text-cyan-400 text-2xl"></i></div>
+          <p class="font-bold text-white text-sm">Input Layer</p>
+          <p class="text-xs text-slate-500 mt-1">Stream / File / Img</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center text-amber-500 flow-arrow px-2"><i class="fa-solid fa-chevron-right text-2xl md:text-3xl"></i></div>
+
+      <div class="tilt-card glass p-5 rounded-2xl text-center min-w-[150px] w-[calc(33%-2rem)] flex-1 max-w-[200px] border-t-2 border-amber-400/50" data-tilt>
+        <div class="tilt-content h-full flex flex-col justify-center items-center">
+          <div class="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center mb-3 shadow-lg"><i class="fa-solid fa-crop text-amber-400 text-2xl"></i></div>
+          <p class="font-bold text-white text-sm">Preprocess</p>
+          <p class="text-xs text-slate-500 mt-1">Resize / Normalize</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center text-amber-500 flow-arrow delay-100 px-2"><i class="fa-solid fa-chevron-right text-2xl md:text-3xl"></i></div>
+
+      <div class="tilt-card glass p-5 rounded-2xl text-center min-w-[150px] w-[calc(33%-2rem)] flex-1 max-w-[200px] border-t-2 border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.15)]" data-tilt>
+        <div class="tilt-content h-full flex flex-col justify-center items-center">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-b from-red-500 to-orange-500 flex items-center justify-center mb-3 shadow-lg"><i class="fa-solid fa-brain text-white text-2xl"></i></div>
+          <p class="font-bold text-white text-sm">YOLOv8</p>
+          <p class="text-xs text-slate-500 mt-1">TensorRT Runtime</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center text-amber-500 flow-arrow delay-200 px-2"><i class="fa-solid fa-chevron-right text-2xl md:text-3xl"></i></div>
+
+      <div class="tilt-card glass p-5 rounded-2xl text-center min-w-[150px] w-[calc(33%-2rem)] flex-1 max-w-[200px] border-t-2 border-cyan-400/50" data-tilt>
+        <div class="tilt-content h-full flex flex-col justify-center items-center">
+          <div class="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center mb-3 shadow-lg"><i class="fa-brands fa-python text-cyan-400 text-2xl"></i></div>
+          <p class="font-bold text-white text-sm">Django Core</p>
+          <p class="text-xs text-slate-500 mt-1">WebSockets / API</p>
+        </div>
+      </div>
+
+      <div class="hidden md:flex items-center justify-center text-amber-500 flow-arrow delay-300 px-2"><i class="fa-solid fa-chevron-right text-2xl md:text-3xl"></i></div>
+      <div class="hidden md:block">
+        <div class="tilt-card glass p-5 rounded-2xl text-center min-w-[150px] flex-1 max-w-[200px] border-t-2 border-purple-500/50 h-full" data-tilt>
+          <div class="tilt-content h-full flex flex-col justify-center items-center">
+            <div class="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center mb-3 shadow-lg"><i class="fa-solid fa-desktop text-purple-400 text-2xl"></i></div>
+            <p class="font-bold text-white text-sm">UI Overlay</p>
+            <p class="text-xs text-slate-500 mt-1">Dashboard / Alerts</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deployment Notes Grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-white">Deployment & Configuration</h2>
+      <p class="text-slate-400 mt-2">Production-grade features ready out-of-the-box</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="tilt-card glass p-6 rounded-2xl border-b-4 border-cyan-400 hover:border-cyan-300 transition-all" data-tilt>
+        <div class="tilt-content">
+          <div class="w-12 h-12 rounded-lg bg-slate-900/60 flex items-center justify-center mb-4 border border-cyan-500/30"><i class="fa-solid fa-memory text-cyan-400 text-xl"></i></div>
+          <h3 class="text-lg font-bold text-white mb-2">CPU/GPU Routing</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Dynamic device allocation. Automatically quantizes to FP16 on CUDA or falls back to OpenVINO/CPU threads maintaining ~50ms latency.</p>
+        </div>
+      </div>
+      <div class="tilt-card glass p-6 rounded-2xl border-b-4 border-amber-400 hover:border-amber-300 transition-all" data-tilt>
+        <div class="tilt-content">
+          <div class="w-12 h-12 rounded-lg bg-slate-900/60 flex items-center justify-center mb-4 border border-amber-500/30"><i class="fa-solid fa-server text-amber-400 text-xl"></i></div>
+          <h3 class="text-lg font-bold text-white mb-2">Django Channels</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Handles 50+ concurrent WebSocket streams. Async consumers push base64 frames and JSON coordinates in real-time.</p>
+        </div>
+      </div>
+      <div class="tilt-card glass p-6 rounded-2xl border-b-4 border-red-500 hover:border-red-400 transition-all" data-tilt>
+        <div class="tilt-content">
+          <div class="w-12 h-12 rounded-lg bg-slate-900/60 flex items-center justify-center mb-4 border border-red-500/30"><i class="fa-solid fa-bell text-red-500 text-xl"></i></div>
+          <h3 class="text-lg font-bold text-white mb-2">Smart Alerting</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Configurable confidence thresholds per class. Triggers SMS/Email/PagerDuty via Celery beat schedules.</p>
+        </div>
+      </div>
+      <div class="tilt-card glass p-6 rounded-2xl border-b-4 border-purple-500 hover:border-purple-400 transition-all" data-tilt>
+        <div class="tilt-content">
+          <div class="w-12 h-12 rounded-lg bg-slate-900/60 flex items-center justify-center mb-4 border border-purple-500/30"><i class="fa-solid fa-rotate text-purple-400 text-xl"></i></div>
+          <h3 class="text-lg font-bold text-white mb-2">Active Learning</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Auto-captures low-confidence frames for human review. One-click dataset export for seamless continuous retraining.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

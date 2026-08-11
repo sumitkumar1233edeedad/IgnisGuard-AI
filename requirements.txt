@@ -1,0 +1,6 @@
+Django
+gunicorn
+Pillow
+whitenoise
+ultralytics
+numpy
